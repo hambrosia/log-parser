@@ -5,7 +5,7 @@ import os
 import requests
 
 cwd = os.getcwd()
-target_path = cwd + "/" + "example.log"
+target_path = cwd + "/" + "target.log"
 
 userstack_key = os.getenv('USERSTACK_KEY')
 userstack_url = "http://api.userstack.com/detect"
