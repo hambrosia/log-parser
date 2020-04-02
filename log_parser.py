@@ -17,8 +17,6 @@ csv_name = "location_to_device.csv"
 output_path = cwd + "/" + csv_name
 column_descriptions = ["Country", "State", "Device", "Browser"]
 
-location_device_to_write = []
-
 def get_location(url: str) -> {}:
 	ip_location_response = requests.get(url).json()
 	country = ip_location_response['country_name']
@@ -37,7 +35,7 @@ def get_device_browser(ua: str) -> {}:
 
 with open(target_path, "r") as target, open(output_path, "w", newline = "") as output:
 	writer = csv.writer(output)
- 	# writer.writerow(column_descriptions)
+	writer.writerow(column_descriptions)
 
 	for line in target:
 		ip = line.split(" ")[0]
