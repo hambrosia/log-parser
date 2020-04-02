@@ -7,14 +7,14 @@ import requests
 cwd = os.getcwd()
 target_path = cwd + "/" + "target.log"
 
+# Required Userstack API key
 userstack_key = os.getenv('USERSTACK_KEY')
 userstack_url = "http://api.userstack.com/detect"
-
 
 ip_location_base_url = "https://ipapi.co/"
 ip_location_suffix = "/json"
 
-# I got rate limited on the free ipapi version, this allows for an optional query paramter to use an API key stored as an env var. 
+# Handling of optional IPAPI key
 ip_api_key = os.getenv('IPAPI_KEY') 
 if ip_api_key is not None:
 	ip_location_suffix += "?key=" + ip_api_key

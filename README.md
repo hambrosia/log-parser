@@ -6,6 +6,7 @@ Log Parser is a Python implementation of a log parser, intended to take log file
 * Ensure the script is executable. `chmod 755 log_parser.py` or `chmod + log_parser.py` allows execution
 * Install requirements from `requirements.txt` using `pip` or simply `pip3 install requests` as it is the only dependency at this time.
 * Create an account with Userstack (userstack.com). Retrieve your API key and export it. `export USERSTACK_KEY=<your_key_here>`
+* (Optional): If you have a purchased API key for IPAPI (https://ipapi.co/) you can export it using `export IPAPI_KEY=<your_key_here>`. This helps to avoid rate limiting issues.
 
 ## Current Features
 The current version has support for the following log file formats and functions:
