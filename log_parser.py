@@ -39,9 +39,7 @@ def get_device(ua: str) -> {}:
 	}
 	response = requests.get(userstack_url, params)
 	if response.status_code == 200:
-		print(response)
 		json_response = response.json()
-		print(json_response)
 		device_type = json_response['device']['type']
 		browser = json_response['browser']['name']
 		return {'type' : device_type, 'browser': browser}
@@ -53,8 +51,8 @@ with open(target_path, "r") as target, open(output_path, "w", newline = "") as o
 	writer.writerow(column_descriptions)
 	
 	for line in target:
-		print("executed")
 		ip = line.split(" ")[0]
+		print(ip)
 		user_agent = line.rsplit("\"")[-2]
 
 		ip_location_url = ip_location_base_url + ip + ip_location_suffix
@@ -62,13 +60,14 @@ with open(target_path, "r") as target, open(output_path, "w", newline = "") as o
 		if location == {}:
 			print("No location or bad response, skipping entry")
 			continue
-		print(location)
+		print("Location: " + location['country'] +  " Region: " + location['region'])
 		
 		device = get_device(user_agent)
 		if device == {}:
 			print("No device or bad response, skipping entry")
 			continue
-		print(device)
+
+		print("Device Type: " + device['type'] +  " Browser: " + device['browser'])
 
 		writer.writerow([location['country'], location['region'], device['type'], device['browser']])
 
