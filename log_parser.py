@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
-import csv, os, requests, sys
+import csv
+import os
+import requests
+import sys
 
 # Output filepaths and formatting
 CWD = os.getcwd()
