@@ -3,10 +3,10 @@
 import csv, os, requests, sys
 
 # Output filepaths and formatting
-cwd = os.getcwd()
-csv_name = "location_to_device.csv"
-output_path = cwd + "/" + csv_name
-column_descriptions = ["Country", "State", "Device", "Browser"]
+CWD = os.getcwd()
+CSV_NAME = "location_to_device.csv"
+OUTPUT_PATH = CWD + "/" + CSV_NAME
+COLUMN_DESCRIPTIONS = ["Country", "State", "Device", "Browser"]
 
 # Required Userstack API key:
 def userstack_api_key() -> str:
@@ -16,8 +16,8 @@ def userstack_api_key() -> str:
 	print("Rquired Userstack API key not found in environment variables. Export key as USERSTACK_KEY")
 	sys.exit(os.EX_CONFIG)
 
-userstack_key = userstack_api_key()
-userstack_url = "http://api.userstack.com/detect"
+USERSTACK_KEY = userstack_api_key()
+USERSTACK_URL = "http://api.userstack.com/detect"
 
 # Optional IPAPI key added if present
 def ip_api_suffix() -> str:
@@ -27,8 +27,8 @@ def ip_api_suffix() -> str:
 		ip_location_suffix += "?key=" + ip_api_key
 	return ip_location_suffix
 
-ip_location_base_url = "https://ipapi.co/"
-ip_api_suffix = ip_api_suffix()
+IP_API_BASE_URL = "https://ipapi.co/"
+IP_API_SUFFIX = ip_api_suffix()
 
 # Validate arguments and filepath
 def argument_exists() -> bool:
@@ -50,7 +50,7 @@ def get_target_path() -> str:
 				return sys.argv[1]
 		exit_no_input()
 
-target_path = get_target_path()
+TARGET_PATH = get_target_path()
 
 # Request location using IP
 def get_location(url: str) -> {}:
@@ -65,10 +65,10 @@ def get_location(url: str) -> {}:
 # Request device information using useragent
 def get_device(ua: str) -> {}:
 	params = {
-		'access_key': userstack_key,
+		'access_key': USERSTACK_KEY,
 		'ua' : ua
 	}
-	response = requests.get(userstack_url, params)
+	response = requests.get(USERSTACK_URL, params)
 	if response.status_code == 200:
 		json_response = response.json()
 		device_type = json_response['device']['type']
@@ -77,17 +77,17 @@ def get_device(ua: str) -> {}:
 	return {}
 
 def convert_log_to_csv() -> None:
-	with open(target_path, "r") as target, open(output_path, "w", newline = "") as output:
+	with open(TARGET_PATH, "r") as target, open(OUTPUT_PATH, "w", newline = "") as output:
 		print("Looking up locations and devices for access log")
 		writer = csv.writer(output)
-		writer.writerow(column_descriptions)
+		writer.writerow(COLUMN_DESCRIPTIONS)
 		
 		for line in target:
 			ip = line.split(" ")[0]
 			print(ip)
 			user_agent = line.rsplit("\"")[-2]
 
-			ip_location_url = ip_location_base_url + ip + ip_api_suffix
+			ip_location_url = IP_API_BASE_URL + ip + IP_API_SUFFIX
 			location = get_location(ip_location_url)
 			if location == {}:
 				print("No location or bad response, skipping entry")
