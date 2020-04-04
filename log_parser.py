@@ -2,8 +2,8 @@
 
 import csv
 import os
-import requests
 import sys
+import requests
 
 # Output filepaths and formatting
 CWD = os.getcwd()
@@ -52,6 +52,7 @@ def get_target_path() -> str:
         if target_exists(sys.argv[1]):
             return sys.argv[1]
     exit_no_input()
+    return ""
 
 TARGET_PATH = get_target_path()
 
@@ -66,10 +67,10 @@ def get_location(url: str) -> {}:
     return {}
 
 # Request device information using useragent
-def get_device(ua: str) -> {}:
+def get_device(useragent: str) -> {}:
     params = {
         'access_key': USERSTACK_KEY,
-        'ua' : ua
+        'ua' : useragent
     }
     response = requests.get(USERSTACK_URL, params)
     if response.status_code == 200:
@@ -86,11 +87,11 @@ def convert_log_to_csv() -> None:
         writer.writerow(COLUMN_DESCRIPTIONS)
 
         for line in target:
-            ip = line.split(" ")[0]
-            print(ip)
+            ip_addr = line.split(" ")[0]
+            print(ip_addr)
             user_agent = line.rsplit("\"")[-2]
 
-            ip_location_url = IP_API_BASE_URL + ip + IP_API_SUFFIX
+            ip_location_url = IP_API_BASE_URL + ip_addr + IP_API_SUFFIX
             location = get_location(ip_location_url)
             if location == {}:
                 print("No location or bad response, skipping entry")
