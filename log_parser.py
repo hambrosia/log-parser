@@ -2,15 +2,21 @@
 
 import csv, os, requests, sys
 
-# Target and output filepaths and formatting
+# Output filepaths and formatting
 cwd = os.getcwd()
-target_path = sys.argv[1]
 csv_name = "location_to_device.csv"
 output_path = cwd + "/" + csv_name
 column_descriptions = ["Country", "State", "Device", "Browser"]
 
-# Required Userstack API key
-userstack_key = os.getenv('USERSTACK_KEY')
+# Required Userstack API key:
+def userstack_api_key() -> str:
+	userstack_api_key = os.getenv('USERSTACK_KEY') 	
+	if userstack_api_key is not None:	
+		return userstack_api_key
+	print("Rquired Userstack API key not found in environment variables. Export key as USERSTACK_KEY")
+	sys.exit(os.EX_CONFIG)
+
+userstack_key = userstack_api_key()
 userstack_url = "http://api.userstack.com/detect"
 
 # Optional IPAPI key added if present
@@ -24,6 +30,29 @@ def ip_api_suffix() -> str:
 ip_location_base_url = "https://ipapi.co/"
 ip_api_suffix = ip_api_suffix()
 
+# Validate arguments and filepath
+def argument_exists() -> bool:
+	exists = False
+	if len(sys.argv) > 1:
+		exists = True
+	return exists
+
+def target_exists(path: str) -> bool:
+	return os.path.exists(path)
+
+def exit_no_input() -> None:
+	print("Target not found at specified path. Ensure correct path to target is passed as argument after the script. \nExample usage:  ./log_parser.py <path to file>")
+	sys.exit(os.EX_NOINPUT)
+
+def get_target_path() -> str:
+		if argument_exists():	
+			if target_exists(sys.argv[1]):
+				return sys.argv[1]
+		exit_no_input()
+
+target_path = get_target_path()
+
+# Request location using IP
 def get_location(url: str) -> {}:
 	response = requests.get(url)
 	if response.status_code == 200:
@@ -33,6 +62,7 @@ def get_location(url: str) -> {}:
 		return {'country' : country, 'region': region}
 	return {}
 
+# Request device information using useragent
 def get_device(ua: str) -> {}:
 	params = {
 		'access_key': userstack_key,
@@ -75,15 +105,9 @@ def convert_log_to_csv() -> None:
 
 	print("Complete! CSV file written to location_device.csv")
 
-def target_exists(path: str) -> bool:
-	return os.path.exists(path)
-
 def main() -> None:
-	if target_exists(target_path):
-		convert_log_to_csv()
-		sys.exit(os.EX_OK)
-	print("Target not found at specified path")
-	sys.exit(os.EX_NOINPUT)
+			convert_log_to_csv()
+			sys.exit(os.EX_OK)
 
 if __name__ == "__main__":
 	main()
