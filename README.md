@@ -15,6 +15,6 @@ The current version has support for the following log file formats and functions
 * Supported functions: print approximate location (Country, State), device type (Mobile, Desktop, Tablet), and browser (Chrome, Firefox, Safari, etc.) to a CSV file.
 
 ## Usage
-* Target log file must be NGINX access log format and located in same directory as script and be named `target.log`
-* Run script using standard `./` syntax, i.e. in same directory `./log_parser.py`
-* Result will be piped to a file in the same directory called `location_to_device.csv`
+* Target log file must be NGINX access log format, e.g.: `75.114.153.6 - - [10/Jun/2015:18:14:56 +0000] "GET /favicon.ico HTTP/1.1" 200 0 "http://www.gobankingrates.com/banking/find-cds-now/" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36"`
+* Run script using standard `./` syntax followed by the path to the log, i.e. `./log_parser.py ~/log-parser/target.log`
+* Result will be printed to a file in the same directory called `location_to_device.csv`

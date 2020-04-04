@@ -3,9 +3,10 @@
 import csv
 import os
 import requests
+import sys
 
 cwd = os.getcwd()
-target_path = cwd + "/" + "target.log"
+target_path = sys.argv[1]
 
 # Required Userstack API key
 userstack_key = os.getenv('USERSTACK_KEY')
@@ -45,6 +46,9 @@ def get_device(ua: str) -> {}:
 		return {'type' : device_type, 'browser': browser}
 	return {}
 
+def target_exists(path: str) -> bool:
+	return os.path.exists(str)
+		
 with open(target_path, "r") as target, open(output_path, "w", newline = "") as output:
 	print("Looking up locations and devices for access log")
 	writer = csv.writer(output)
