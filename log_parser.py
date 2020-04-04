@@ -44,7 +44,7 @@ def target_exists(path: str) -> bool:
     return os.path.exists(path)
 
 def exit_no_input() -> None:
-    print("Target not found at specified path. Ensure correct path to target is passed as argument after the script. \nExample usage:  ./log_parser.py <path to file>")
+    print("Target not found at specified path. Ensure correct path to target is passed as argument. \nExample usage:  ./log_parser.py <path to file>")
     sys.exit(os.EX_NOINPUT)
 
 def get_target_path() -> str:
