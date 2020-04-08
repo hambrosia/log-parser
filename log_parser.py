@@ -35,10 +35,7 @@ IP_API_SUFFIX = ip_api_suffix()
 
 # Validate arguments and filepath
 def argument_exists() -> bool:
-    exists = False
-    if len(sys.argv) > 1:
-        exists = True
-    return exists
+    return  len(sys.argv) > 1
 
 def target_exists(path: str) -> bool:
     return os.path.exists(path)
