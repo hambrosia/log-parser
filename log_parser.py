@@ -55,16 +55,18 @@ TARGET_PATH = get_target_path()
 
 # Request location using IP
 def get_location(url: str) -> {}:
+    location = {}
     response = requests.get(url)
     if response.status_code == 200:
         json_response = response.json()
         country = json_response['country_name']
         region = json_response['region']
-        return {'country' : country, 'region': region}
-    return {}
+        location = {'country' : country, 'region': region}
+    return location
 
 # Request device information using useragent
 def get_device(useragent: str) -> {}:
+    device_info = {}
     params = {
         'access_key': USERSTACK_KEY,
         'ua' : useragent
@@ -74,8 +76,8 @@ def get_device(useragent: str) -> {}:
         json_response = response.json()
         device_type = json_response['device']['type']
         browser = json_response['browser']['name']
-        return {'type' : device_type, 'browser': browser}
-    return {}
+        device_info = {'type' : device_type, 'browser': browser}
+    return device_info
 
 def convert_log_to_csv() -> None:
     with open(TARGET_PATH, "r") as target, open(OUTPUT_PATH, "w", newline = "") as output:
